@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- 
+      This is an HTML comment
+      You can write text in a comment and the content won't be visible in the page
+    -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--
+      This is the page head - it contains info the browser uses
+      Like the title, which appears on the browser tab but not inside the page
+      Further down you'll see the content that displays in the page
+    -->
+    <title>IDB overlapping readwrite transactions test</title>
+
+    <!-- The website stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- The website JavaScript file -->
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <span>
+      Running test...
+    </span>
+    <div id="result-db1" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    <span>
+      Running test part 2...
+    </span>
+    <div id="result-db2" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    <div id="explanation">
+      <b>Explanation</b>
+    <p>
+      This test demonstrates your browser's treatment of concurrent IndexedDB readwrite transactions. <em>If you see a spinner rotating, it's using system resources, so you probably don't want to keep this tab open for too long in that state.</em>
+    </p>  
+    <p>
+      For browsers which impose the bare minimum set of constraints on transaction scheduling (<a href="https://w3c.github.io/IndexedDB/#transaction-scheduling">see spec</a>), this test should complete very quickly.
+    </p>  
+    <p>
+      For browsers that apply additional constraints, in particular <a href="https://searchfox.org/mozilla-central/source/dom/indexedDB/ActorsParent.cpp#8157-8158">disallowing concurrent readwrite transactions on the same IDB database</a>, this test will <b>never complete</b>.
+      Technically either behavior is standards-compliant and IRL sites are (hopefully) unlikely to behave as this one does. However, this behavior also indicates a possible performance bottleneck for real world sites that concurrently read and write to multiple object stores in the same database, and/or do extensive work in transactions.
+    </p>
+    <p>
+      One take-away for site owners is to prefer using distinct <a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase">databases</a> rather than simply separate <a>object stores</a>
+    </p>
+    </div>
+  </body>
+</html>
